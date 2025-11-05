@@ -70,7 +70,7 @@ const Index = () => {
         { label: "happy", confidence: 0.85, isDistress: false },
         { label: "neutral", confidence: 0.75, isDistress: false },
         { label: "fear", confidence: 0.92, isDistress: true },
-        { label: "sad", confidence: 0.68, isDistress: false },
+        { label: "sad", confidence: 0.68, isDistress: true },
       ];
       
       const mockGestures = ["none", "wave", "help", "stop"];
@@ -81,7 +81,7 @@ const Index = () => {
       setEmotion(randomEmotion);
       setGesture(randomGesture);
 
-      const isSOSGesture = randomGesture === "help" || randomGesture === "stop";
+      const isSOSGesture = randomGesture === "help";
       
       setDistressScore(prev => {
         let newScore = prev;
@@ -96,11 +96,11 @@ const Index = () => {
         
         if (newScore >= DISTRESS_THRESHOLD && !isAlertTriggered) {
           setIsAlertTriggered(true);
-          addEvent("alert", "🚨 SOS ALERT TRIGGERED - Emergency behavior detected!", "critical");
-          toast.error("Emergency Alert Triggered!", {
+          addEvent("alert", "🚨 SOS sent to nearby contact - Emergency behavior detected!", "critical");
+          toast.error("SOS Sent to Nearby Contact!", {
             description: location 
-              ? `Location: ${location.lat.toFixed(4)}, ${location.lon.toFixed(4)}`
-              : "Location unavailable",
+              ? `Emergency alert sent with location: ${location.lat.toFixed(4)}, ${location.lon.toFixed(4)}`
+              : "Emergency alert sent",
           });
         }
         
@@ -162,7 +162,7 @@ const Index = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <EmotionDisplay emotion={emotion} />
-              <GestureDisplay gesture={gesture} isSOSGesture={gesture === "help" || gesture === "stop"} />
+              <GestureDisplay gesture={gesture} isSOSGesture={gesture === "help"} />
             </div>
           </div>
 
